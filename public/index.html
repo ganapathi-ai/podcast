@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>మేలుకో మనసా — Podcast Studio</title>
+  <meta name="description" content="Meluko Manasa Telugu Stoic Podcast production studio. Generate AI scripts, synthesize voice, and create YouTube-ready videos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ── HEADER ─────────────────────────────────────────────────────── -->
+    <header id="site-header">
+      <div class="header-inner">
+        <div class="header-brand">
+          <div class="brand-logo">
+            <img src="/assets/ChatGPT Image Jun 21, 2026, 01_15_36 PM.png" alt="Meluko Manasa Logo" id="logo-img" />
+          </div>
+          <div class="brand-text">
+            <h1 class="brand-title">మేలుకో మనసా</h1>
+            <span class="brand-sub">Telugu Stoic Podcast Studio</span>
+          </div>
+        </div>
+        <div class="header-waveform" id="header-waveform" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="header-actions">
+          <div id="api-status" class="api-badge checking">
+            <span class="dot"></span><span class="api-label">Checking...</span>
+          </div>
+          <button id="history-btn" class="btn-icon" title="View History">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            History
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── TAB NAVIGATION ─────────────────────────────────────────────── -->
+    <nav id="tab-nav" role="tablist">
+      <button class="tab-btn active" data-tab="script" role="tab" aria-selected="true" id="tab-script-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        AI Script Generator
+      </button>
+      <button class="tab-btn" data-tab="voice" role="tab" aria-selected="false" id="tab-voice-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        Voice Studio
+      </button>
+      <button class="tab-btn" data-tab="video" role="tab" aria-selected="false" id="tab-video-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        Video Studio
+      </button>
+    </nav>
+
+    <!-- ── MAIN CONTENT ───────────────────────────────────────────────── -->
+    <main id="main-content">
+
+      <!-- ══ TAB 1: SCRIPT GENERATOR ══════════════════════════════════ -->
+      <section id="tab-script" class="tab-panel active" role="tabpanel">
+        <div class="panel-grid">
+
+          <!-- Left: Parameters -->
+          <aside class="panel-left">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  Script Parameters
+                </h2>
+                <p class="card-sub">Configure your AI content</p>
+              </div>
+
+              <form id="script-form" class="form-stack">
+                <div id="script-error" class="alert alert-error hidden"></div>
+
+                <div class="field">
+                  <label class="field-label" for="script-topic">Topic / Core Idea *</label>
+                  <textarea id="script-topic" class="field-textarea" rows="3"
+                    placeholder="e.g., మనశ్శాంతిని పొందే 5 మార్గాలు&#10;(5 Ways to Stabilize the Mind with Stoic Wisdom)"></textarea>
+                </div>
+
+                <div class="field">
+                  <label class="field-label" for="script-keyword">SEO Keywords (optional)</label>
+                  <input id="script-keyword" class="field-input" type="text"
+                    placeholder="Meluko Manasa, Telugu motivation, stoicism" />
+                </div>
+
+                <div class="field-row">
+                  <div class="field">
+                    <label class="field-label" for="script-language">Language</label>
+                    <select id="script-language" class="field-select">
+                      <option value="Telugu" selected>Telugu (తెలుగు)</option>
+                      <option value="Hindi">Hindi (हिन्दी)</option>
+                      <option value="English">English</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label class="field-label" for="script-length">Duration</label>
+                    <select id="script-length" class="field-select">
+                      <optgroup label="── Shorts ──">
+                        <option value="60 seconds">60 seconds (~150w)</option>
+                      </optgroup>
+                      <optgroup label="── Medium ──">
+                        <option value="5 minutes" selected>5 minutes (~750w)</option>
+                        <option value="10 minutes">10 minutes (~1.5k w)</option>
+                        <option value="15 minutes">15 minutes (~2.2k w)</option>
+                        <option value="20 minutes">20 minutes (~3k w)</option>
+                        <option value="30 minutes">30 minutes (~4.5k w)</option>
+                      </optgroup>
+                      <optgroup label="── Long Form ──">
+                        <option value="45 minutes">45 minutes (~6.7k w)</option>
+                        <option value="60 minutes">60 minutes (~9k w)</option>
+                        <option value="90 minutes">90 minutes (~13.5k w)</option>
+                        <option value="120 minutes">2 hours (~18k w)</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="field-row">
+                  <div class="field">
+                    <label class="field-label" for="script-type">Content Type</label>
+                    <select id="script-type" class="field-select">
+                      <option value="Podcast" selected>Podcast</option>
+                      <option value="YouTube Long Form">YouTube Long Form</option>
+                      <option value="Storytelling">Storytelling</option>
+                      <option value="Educational">Educational</option>
+                      <option value="Motivational">Motivational</option>
+                      <option value="Documentary">Documentary</option>
+                      <option value="Mythology">Mythology</option>
+                      <option value="Biography">Biography</option>
+                      <option value="YouTube Shorts">YouTube Shorts</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label class="field-label" for="script-style">Script Style</label>
+                    <select id="script-style" class="field-select">
+                      <option value="Storytelling" selected>Storytelling</option>
+                      <option value="Professional">Professional</option>
+                      <option value="Cinematic">Cinematic</option>
+                      <option value="Documentary">Documentary</option>
+                      <option value="Emotional">Emotional</option>
+                      <option value="Educational">Educational</option>
+                      <option value="Podcast Host">Podcast Host</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button type="submit" id="script-generate-btn" class="btn-primary btn-full">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  <span id="script-btn-label">Generate AI Script</span>
+                </button>
+
+                <button type="button" id="use-in-voice-btn" class="btn-secondary btn-full hidden">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg>
+                  Use in Voice Studio
+                </button>
+              </form>
+            </div>
+
+            <!-- Info card -->
+            <div class="card card-info">
+              <div class="info-row">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <div>
+                  <p class="info-title">Retention Optimized</p>
+                  <p class="info-text">Retention sparks injected every ~25s — sound cues, scene shifts, emotional hooks — to maximize watch time.</p>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Right: Script Output -->
+          <div class="panel-right" id="script-output-panel">
+
+            <!-- Empty state -->
+            <div id="script-empty" class="empty-state">
+              <div class="empty-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </div>
+              <h3>No Script Generated Yet</h3>
+              <p>Fill in the parameters and click <strong>Generate AI Script</strong> to create your Telugu stoic podcast script.</p>
+            </div>
+
+            <!-- Loading state -->
+            <div id="script-loading" class="loading-state hidden">
+              <div class="loading-spinner"></div>
+              <p>Gemini is writing your script...</p>
+              <p class="loading-sub">This may take 10-30 seconds for longer scripts</p>
+            </div>
+
+            <!-- Script result -->
+            <div id="script-result" class="hidden">
+              <div class="script-header">
+                <div>
+                  <h3 class="script-title">AI Generated Screenplay</h3>
+                  <p id="script-meta" class="script-meta"></p>
+                </div>
+                <div class="script-actions">
+                  <button id="script-copy-all" class="btn-ghost">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    Copy All
+                  </button>
+                </div>
+              </div>
+              <div id="script-blocks" class="script-blocks"></div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ TAB 2: VOICE STUDIO ═══════════════════════════════════════ -->
+      <section id="tab-voice" class="tab-panel" role="tabpanel">
+        <div class="panel-grid">
+
+          <!-- Left: Controls -->
+          <aside class="panel-left">
+
+            <!-- Voice Presets -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+                  Voice Preset
+                </h2>
+              </div>
+              <div class="preset-grid" id="voice-presets">
+                <!-- Populated by voiceStudio.js -->
+              </div>
+            </div>
+
+            <!-- Modulation Controls -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                  Speech Modulation
+                </h2>
+              </div>
+
+              <div class="form-stack">
+                <div class="field">
+                  <div class="field-label-row">
+                    <label class="field-label" for="voice-emotion">Emotion / Tone</label>
+                    <span id="emotion-val" class="field-val">Professional</span>
+                  </div>
+                  <select id="voice-emotion" class="field-select">
+                    <option value="Professional">Professional Narrator</option>
+                    <option value="Calm & Meditative">Calm &amp; Meditative</option>
+                    <option value="Motivational">Motivational</option>
+                    <option value="Dramatic">Dramatic</option>
+                    <option value="Conversational">Conversational</option>
+                    <option value="Narrative">Narrative</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <div class="field-label-row">
+                    <label class="field-label" for="voice-speed">Speech Speed</label>
+                    <span id="speed-val" class="field-val">1.0×</span>
+                  </div>
+                  <input id="voice-speed" type="range" class="field-range gold" min="0.5" max="2.0" step="0.1" value="1.0" />
+                  <div class="range-labels"><span>Slow 0.5×</span><span>Fast 2.0×</span></div>
+                </div>
+
+                <div class="field">
+                  <div class="field-label-row">
+                    <label class="field-label" for="voice-pitch">Pitch Tone</label>
+                    <span id="pitch-val" class="field-val">1.0×</span>
+                  </div>
+                  <input id="voice-pitch" type="range" class="field-range purple" min="0.7" max="1.3" step="0.05" value="1.0" />
+                  <div class="range-labels"><span>Deep 0.7×</span><span>High 1.3×</span></div>
+                </div>
+
+                <div class="field">
+                  <label class="field-label" for="voice-format">Export Format</label>
+                  <select id="voice-format" class="field-select">
+                    <option value="mp3" selected>MP3 — 192kbps (YouTube ready)</option>
+                    <option value="wav">WAV — 44.1kHz Lossless</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Right: Text input + synthesis -->
+          <div class="panel-right">
+            <div class="card card-tall">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg>
+                  Voice Adaptation Canvas
+                </h2>
+                <p class="card-sub">Paste or type your script to synthesize voice</p>
+              </div>
+
+              <div class="form-stack">
+                <div class="field">
+                  <div class="field-label-row">
+                    <label class="field-label" for="voice-text">Script Text</label>
+                    <span id="voice-char-count" class="field-val">0 chars</span>
+                  </div>
+                  <textarea id="voice-text" class="field-textarea tall-textarea" rows="10"
+                    placeholder="Type or paste your screenplay here... or click 'Use in Voice Studio' from Script Generator to auto-fill.&#10;&#10;Telugu, Hindi, or English text is supported."></textarea>
+                </div>
+
+                <div id="voice-error" class="alert alert-error hidden"></div>
+
+                <!-- Waveform / Player area -->
+                <div id="voice-player-area" class="player-area hidden">
+                  <div class="waveform-bars" id="voice-waveform">
+                    <span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                  <div class="player-controls">
+                    <audio id="voice-audio-player" controls></audio>
+                    <div class="player-downloads">
+                      <a id="voice-download-mp3" class="btn-download" download>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        MP3
+                      </a>
+                      <a id="voice-download-wav" class="btn-download" download>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        WAV
+                      </a>
+                      <button id="voice-use-in-video" class="btn-ghost">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                        Use in Video Studio
+                      </button>
+                    </div>
+                  </div>
+                  <p id="voice-duration" class="voice-meta"></p>
+                </div>
+
+                <div class="field-row">
+                  <button id="voice-synthesize-btn" class="btn-primary" style="flex:1;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg>
+                    <span id="voice-btn-label">Synthesize Voice</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ TAB 3: VIDEO STUDIO ═══════════════════════════════════════ -->
+      <section id="tab-video" class="tab-panel" role="tabpanel">
+        <div class="panel-grid">
+
+          <!-- Left: Config -->
+          <aside class="panel-left">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                  Video Configuration
+                </h2>
+                <p class="card-sub">Assemble your YouTube podcast video</p>
+              </div>
+
+              <div class="form-stack">
+                <div class="field">
+                  <label class="field-label">Audio Source</label>
+                  <div id="video-audio-status" class="audio-source-box">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg>
+                    <span id="video-audio-label">No audio selected — go to Voice Studio first</span>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="field-label" for="video-topic">Episode Title</label>
+                  <input id="video-topic" class="field-input" type="text" placeholder="e.g., Marcus Aurelius on Inner Peace" />
+                </div>
+
+                <div class="field">
+                  <label class="field-label">Video Structure</label>
+                  <div class="structure-preview">
+                    <div class="structure-step active">
+                      <span class="step-num">1</span>
+                      <div>
+                        <p class="step-title">Intro Video</p>
+                        <p class="step-sub">Channel branding intro (from assets)</p>
+                      </div>
+                    </div>
+                    <div class="structure-arrow">↓</div>
+                    <div class="structure-step active">
+                      <span class="step-num">2</span>
+                      <div>
+                        <p class="step-title">Ken Burns Image</p>
+                        <p class="step-sub">Purple branded image with float animation + TTS audio</p>
+                      </div>
+                    </div>
+                    <div class="structure-arrow">↓</div>
+                    <div class="structure-step active">
+                      <span class="step-num">3</span>
+                      <div>
+                        <p class="step-title">YouTube MP4 Output</p>
+                        <p class="step-sub">H.264 + AAC, 1920×1080, faststart</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="video-error" class="alert alert-error hidden"></div>
+
+                <button id="video-generate-btn" class="btn-primary btn-full" disabled>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                  <span id="video-btn-label">Generate YouTube Video</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Specs card -->
+            <div class="card card-info">
+              <div class="info-row">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <div>
+                  <p class="info-title">YouTube Ready ✓</p>
+                  <p class="info-text">Output: H.264 + AAC • 1920×1080 • 25fps • 192kbps audio • faststart flag. Upload directly to YouTube Studio.</p>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Right: Preview + Progress + Download -->
+          <div class="panel-right">
+            <div class="card card-tall">
+              <div class="card-header">
+                <h2 class="card-title">Preview &amp; Output</h2>
+              </div>
+
+              <!-- Image preview with Ken Burns simulation -->
+              <div class="video-preview-area">
+                <div class="video-canvas" id="video-canvas">
+                  <img id="video-preview-img" src="/assets/ChatGPT Image Jun 21, 2026, 01_08_35 PM.png"
+                    alt="Branded image preview" class="ken-burns-preview" />
+                  <div class="video-overlay">
+                    <div class="overlay-badge">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                      1920 × 1080 — YouTube Ready
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Progress area -->
+              <div id="video-progress-area" class="hidden">
+                <div class="progress-label">
+                  <span id="video-progress-text">Generating video...</span>
+                  <span id="video-progress-pct">0%</span>
+                </div>
+                <div class="progress-bar">
+                  <div id="video-progress-fill" class="progress-fill" style="width:0%"></div>
+                </div>
+                <p class="progress-note">This may take several minutes for long podcasts. The server is encoding your video in the background.</p>
+              </div>
+
+              <!-- Download area -->
+              <div id="video-download-area" class="hidden">
+                <div class="download-success">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <div>
+                    <p class="download-title">Video Ready!</p>
+                    <p id="video-file-info" class="download-sub"></p>
+                  </div>
+                </div>
+                <div class="download-actions">
+                  <a id="video-download-link" class="btn-primary" download>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download MP4
+                  </a>
+                  <button id="video-new-btn" class="btn-secondary">Generate Another</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ── HISTORY SIDEBAR ────────────────────────────────────────────── -->
+  <div id="history-overlay" class="overlay hidden"></div>
+  <aside id="history-sidebar" class="sidebar hidden" aria-label="Generation History">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">History</h2>
+      <button id="history-close-btn" class="btn-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="sidebar-tabs">
+      <button class="sidebar-tab active" data-htab="scripts">Scripts</button>
+      <button class="sidebar-tab" data-htab="audio">Audio</button>
+      <button class="sidebar-tab" data-htab="videos">Videos</button>
+    </div>
+
+    <div id="history-scripts" class="history-list active"></div>
+    <div id="history-audio" class="history-list"></div>
+    <div id="history-videos" class="history-list"></div>
+  </aside>
+
+  <!-- ── TOAST ──────────────────────────────────────────────────────── -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- ── SCRIPTS ────────────────────────────────────────────────────── -->
+  <script src="/js/app.js"></script>
+  <script src="/js/scriptGenerator.js"></script>
+  <script src="/js/voiceStudio.js"></script>
+  <script src="/js/videoStudio.js"></script>
+</body>
+</html>
