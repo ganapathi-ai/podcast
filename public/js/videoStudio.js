@@ -222,8 +222,8 @@
 
   // ── Ken Burns — rotate image preview every 10s ────────────────
   const brandedImages = [
-    '/assets/ChatGPT Image Jun 21, 2026, 01_08_35 PM.png',
-    '/assets/ChatGPT Image Jun 21, 2026, 01_04_02 PM.png',
+    '/assets/banner.png',
+    '/assets/banner2.png',
   ];
   let imgIdx = 0;
   function rotatePreviews() {

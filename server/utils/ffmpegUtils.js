@@ -26,8 +26,11 @@ function getVideoDuration(videoPath) {
 
 /**
  * Find the intro video in assets directory.
+ * Prefers clean-named intro.mp4, falls back to any .mp4
  */
 function findIntroVideo() {
+  const preferred = path.join(ASSETS_DIR, 'intro.mp4');
+  if (fs.existsSync(preferred)) return preferred;
   const files = fs.readdirSync(ASSETS_DIR);
   const mp4 = files.find(f => f.endsWith('.mp4'));
   return mp4 ? path.join(ASSETS_DIR, mp4) : null;
@@ -35,14 +38,13 @@ function findIntroVideo() {
 
 /**
  * Find the best branded image for the podcast visual.
- * Prefers the wide banner (landscape) image.
+ * Prefers clean-named banner.png (wide landscape), falls back to any .png
  */
 function findBrandedImage() {
+  const preferred = path.join(ASSETS_DIR, 'banner.png');
+  if (fs.existsSync(preferred)) return preferred;
   const files = fs.readdirSync(ASSETS_DIR);
-  // Prefer the wide banner (01_08 is the landscape banner)
-  const preferred = files.find(f => f.includes('01_08'));
-  if (preferred) return path.join(ASSETS_DIR, preferred);
-  const png = files.find(f => f.endsWith('.png'));
+  const png = files.find(f => f.endsWith('.png') && !f.includes('logo'));
   return png ? path.join(ASSETS_DIR, png) : null;
 }
 
