@@ -289,9 +289,9 @@ async function checkApiHealth() {
   try {
     const res = await fetch('/api/health');
     const data = await res.json();
-    if (data.geminiConfigured) {
+    if (data.aiConfigured) {
       badge?.classList.replace('checking', 'ok');
-      if (label) label.textContent = 'Gemini Ready';
+      if (label) label.textContent = data.provider === 'gemini-2.5-flash' ? 'Gemini Ready ✓' : 'GPT-4o Ready ✓';
     } else {
       badge?.classList.replace('checking', 'error');
       if (label) label.textContent = 'API Key Missing';
@@ -300,6 +300,7 @@ async function checkApiHealth() {
   } catch {
     badge?.classList.replace('checking', 'error');
     if (label) label.textContent = 'Server Offline';
+    showToast('⚠ Server not running — launch startdev.bat', 'error', 5000);
   }
 }
 
